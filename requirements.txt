@@ -1,0 +1,5 @@
+streamlit==1.28.0     # creates web apps w/python
+pandas==2.1.0         # handles data like excel
+plotly==5.15.0        # makes charts and graphs
+requests==2.31.0      # downloads APIs
+beautifulsoup4==4.12.0 # reads and parses website content
