@@ -1,6 +1,8 @@
-import streamlit as st
-import pandas as pd
-import plotly.express as px
+#Pradyun Bachu
+
+import streamlit as st #for website
+import pandas as pd #for data
+import plotly.express as px #for charts
 
 # Configure how the webpage looks
 st.set_page_config(
