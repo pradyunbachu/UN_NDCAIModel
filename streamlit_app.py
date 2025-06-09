@@ -128,4 +128,20 @@ ax2.set_xlabel('Fund Disbursement (USD mn)')
 ax2.set_ylabel('Average NDC Implementation Score')
 ax2.set_title('Fund Disbursement vs. Avg NDC Implementation')
 ax2.legend()
-st.pyplot(fig2) 
+st.pyplot(fig2)
+
+# --- Country-Level: NDC Count vs. Disbursement ---
+country_ndc_counts = ndc_data.groupby('Country').size().reset_index(name='NDC_Count')
+country_finance = expanded_finance_df.groupby('Country')['Disbursement (USD mn)'].sum().reset_index()
+
+country_level = pd.merge(country_finance, country_ndc_counts, on='Country', how='inner')
+
+st.subheader("Country-Level: NDC Count vs. Disbursement")
+st.write(country_level)
+
+fig3, ax3 = plt.subplots()
+ax3.scatter(country_level['Disbursement (USD mn)'], country_level['NDC_Count'], color='purple')
+ax3.set_xlabel('Country Disbursement (USD mn)')
+ax3.set_ylabel('Number of NDCs')
+ax3.set_title('Country Disbursement vs. Number of NDCs')
+st.pyplot(fig3) 
