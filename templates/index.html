@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>NDC Implementation Analysis</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 40px;
+        line-height: 1.6;
+      }
+      .result {
+        margin: 20px 0;
+        padding: 20px;
+        background-color: #f5f5f5;
+        border-radius: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>NDC Implementation Analysis</h1>
+
+    <div class="result">
+      <h2>Model Results</h2>
+      <p>Finance Data Shape: {{ finance_data_shape }}</p>
+      <p>Expanded Finance Data Shape: {{ expanded_finance_data_shape }}</p>
+      <p>Merged Data Shape: {{ merged_data_shape }}</p>
+      <p>Model Coefficient: {{ model_coefficient }}</p>
+      <p>Model Intercept: {{ model_intercept }}</p>
+    </div>
+  </body>
+</html>

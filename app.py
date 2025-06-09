@@ -1,17 +1,22 @@
-#Pradyun Bachu
+# This is the main application file that sets up the Flask server and API endpoints
+# It integrates the data collection and processing modules to provide data access
 
-import streamlit as st #for website
-import pandas as pd #for data
-import plotly.express as px #for charts
+from flask import Flask, render_template
+from ml.model import run_model
 
-# Configure how the webpage looks
-st.set_page_config(
-    page_title="NDC Tracker",  # What shows in the browser tab
-    page_icon="",                # The little icon in the browser tab
-    layout="wide"                   # Use the full width of the screen
-)
+app = Flask(__name__)
 
-# Create the main title of your app
-st.title("NDC Tracker")
-# Add a subtitle/description
-st.write("See how countries are doing on reducing CO2 emissions")
+@app.route('/')
+def index():
+    # Run the model and get results
+    finance_data_shape, expanded_finance_data_shape, merged_data_shape, model_coefficient, model_intercept = run_model()
+    return render_template('index.html',
+                         finance_data_shape=finance_data_shape,
+                         expanded_finance_data_shape=expanded_finance_data_shape,
+                         merged_data_shape=merged_data_shape,
+                         model_coefficient=model_coefficient,
+                         model_intercept=model_intercept)
+
+if __name__ == '__main__':
+    app.run(debug=True)  # Start the Flask server in debug mode
+
