@@ -2,12 +2,43 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 
+# Removed custom CSS block for dark background
+
+st.markdown(
+    """
+    <style>
+    body, .stApp {
+        background-color: #111 !important;
+        color: #fff !important;
+    }
+    .stApp {
+        background-color: #111 !important;
+    }
+    .css-18e3th9, .css-1d391kg, .css-1cpxqw2, .css-ffhzg2, .css-1v0mbdj, .css-1dp5vir, .css-1lcbmhc {
+        background-color: #111 !important;
+        color: #fff !important;
+    }
+    .stDataFrame, .stTable, .stMarkdown, .stText, .stSubheader, .stHeader, .stTitle, .stCaption, .stPlotlyChart, .stAltairChart, .stVegaLiteChart, .stPyplotChart {
+        color: #fff !important;
+    }
+    .stDataFrame table {
+        color: #fff !important;
+        background-color: #222 !important;
+    }
+    .stDataFrame th, .stDataFrame td {
+        color: #fff !important;
+        background-color: #222 !important;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 st.title("Deposited (USD million current) Analysis")
 
 # --- Load Data ---
 finance_data = pd.read_excel('Data/CFU-Website-MASTER-Update-for-2025.xlsx', sheet_name='Pledges')
 finance_data.columns = finance_data.columns.str.strip()
-st.write("Finance Data Columns:", finance_data.columns.tolist())
 st.subheader("All Deposited (USD million current) Data")
 st.dataframe(finance_data)
 
