@@ -106,22 +106,32 @@ function App() {
                 </button>
                 <h2 style={{ margin: 0 }}>Raw Data & Histogram</h2>
               </div>
-              {showRawData && (
-                <div className="dashboard-row">
-                  <div className="dashboard-col">
-                    <h2>All Deposited (USD million current) Data</h2>
-                    <RawDataTable data={rawData} />
+              <div
+                className="collapsible-content"
+                style={{
+                  maxHeight: showRawData ? 2000 : 0,
+                  opacity: showRawData ? 1 : 0,
+                  overflow: "hidden",
+                  transition:
+                    "max-height 0.4s cubic-bezier(0.4,0,0.2,1), opacity 0.4s cubic-bezier(0.4,0,0.2,1)",
+                }}>
+                {showRawData && (
+                  <div className="dashboard-row">
+                    <div className="dashboard-col">
+                      <h2>All Deposited (USD million current) Data</h2>
+                      <RawDataTable data={rawData} />
+                    </div>
+                    <div className="dashboard-col">
+                      <h2>Deposited (USD million current) Data</h2>
+                      <DepositedColumnTable data={depositedColumn} />
+                    </div>
+                    <div className="dashboard-col">
+                      <h2>Distribution of Deposited (USD million current)</h2>
+                      <DepositedHistogram data={depositedColumn} />
+                    </div>
                   </div>
-                  <div className="dashboard-col">
-                    <h2>Deposited (USD million current) Data</h2>
-                    <DepositedColumnTable data={depositedColumn} />
-                  </div>
-                  <div className="dashboard-col">
-                    <h2>Distribution of Deposited (USD million current)</h2>
-                    <DepositedHistogram data={depositedColumn} />
-                  </div>
-                </div>
-              )}
+                )}
+              </div>
             </section>
             {/* All Tables Section - split horizontally */}
             <section>
@@ -140,24 +150,36 @@ function App() {
                   </button>
                   <h2 style={{ margin: 0 }}>Country Tables</h2>
                 </div>
-                {showCountryTables && (
-                  <div className="dashboard-row">
-                    <div className="dashboard-col">
-                      <h2>
-                        Table: Total Deposited (USD million current) by Country
-                        (with math)
-                      </h2>
-                      <DepositedByCountryTable data={byCountryMath} />
+                <div
+                  className="collapsible-content"
+                  style={{
+                    maxHeight: showCountryTables ? 2000 : 0,
+                    opacity: showCountryTables ? 1 : 0,
+                    overflow: "hidden",
+                    transition:
+                      "max-height 0.4s cubic-bezier(0.4,0,0.2,1), opacity 0.4s cubic-bezier(0.4,0,0.2,1)",
+                  }}>
+                  {showCountryTables && (
+                    <div className="dashboard-row">
+                      <div className="dashboard-col">
+                        <h2>
+                          Table: Total Deposited (USD million current) by
+                          Country (with math)
+                        </h2>
+                        <DepositedByCountryTable data={byCountryMath} />
+                      </div>
+                      <div className="dashboard-col">
+                        <h2>
+                          Table: Total Deposited (USD million current) by
+                          Country (with math, cleaned)
+                        </h2>
+                        <DepositedByCountryCleanTable
+                          data={byCountryCleanMath}
+                        />
+                      </div>
                     </div>
-                    <div className="dashboard-col">
-                      <h2>
-                        Table: Total Deposited (USD million current) by Country
-                        (with math, cleaned)
-                      </h2>
-                      <DepositedByCountryCleanTable data={byCountryCleanMath} />
-                    </div>
-                  </div>
-                )}
+                  )}
+                </div>
               </div>
               {/* Contributor Tables Half */}
               <div>
@@ -174,26 +196,36 @@ function App() {
                   </button>
                   <h2 style={{ margin: 0 }}>Contributor Tables</h2>
                 </div>
-                {showContributorTables && (
-                  <div className="dashboard-row">
-                    <div className="dashboard-col">
-                      <h2>
-                        Table: Total Deposited (USD million current) by
-                        Contributor (with math)
-                      </h2>
-                      <DepositedByContributorTable data={byContributorMath} />
+                <div
+                  className="collapsible-content"
+                  style={{
+                    maxHeight: showContributorTables ? 2000 : 0,
+                    opacity: showContributorTables ? 1 : 0,
+                    overflow: "hidden",
+                    transition:
+                      "max-height 0.4s cubic-bezier(0.4,0,0.2,1), opacity 0.4s cubic-bezier(0.4,0,0.2,1)",
+                  }}>
+                  {showContributorTables && (
+                    <div className="dashboard-row">
+                      <div className="dashboard-col">
+                        <h2>
+                          Table: Total Deposited (USD million current) by
+                          Contributor (with math)
+                        </h2>
+                        <DepositedByContributorTable data={byContributorMath} />
+                      </div>
+                      <div className="dashboard-col">
+                        <h2>
+                          Table: Total Deposited (USD million current) by
+                          Contributor (with math, cleaned)
+                        </h2>
+                        <DepositedByContributorCleanTable
+                          data={byContributorCleanMath}
+                        />
+                      </div>
                     </div>
-                    <div className="dashboard-col">
-                      <h2>
-                        Table: Total Deposited (USD million current) by
-                        Contributor (with math, cleaned)
-                      </h2>
-                      <DepositedByContributorCleanTable
-                        data={byContributorCleanMath}
-                      />
-                    </div>
-                  </div>
-                )}
+                  )}
+                </div>
               </div>
             </section>
             {/* All Charts Section - split horizontally */}
@@ -213,21 +245,33 @@ function App() {
                   </button>
                   <h2 style={{ margin: 0 }}>Country Charts</h2>
                 </div>
-                {showCountryCharts && (
-                  <div className="dashboard-row">
-                    <div className="dashboard-col">
-                      <h2>Total Deposited (USD million current) by Country</h2>
-                      <DepositedByCountryChart data={byCountry} />
+                <div
+                  className="collapsible-content"
+                  style={{
+                    maxHeight: showCountryCharts ? 2000 : 0,
+                    opacity: showCountryCharts ? 1 : 0,
+                    overflow: "hidden",
+                    transition:
+                      "max-height 0.4s cubic-bezier(0.4,0,0.2,1), opacity 0.4s cubic-bezier(0.4,0,0.2,1)",
+                  }}>
+                  {showCountryCharts && (
+                    <div className="dashboard-row">
+                      <div className="dashboard-col">
+                        <h2>
+                          Total Deposited (USD million current) by Country
+                        </h2>
+                        <DepositedByCountryChart data={byCountry} />
+                      </div>
+                      <div className="dashboard-col">
+                        <h2>
+                          Total Deposited (USD million current) by Country
+                          (cleaned)
+                        </h2>
+                        <DepositedByCountryCleanChart data={byCountryClean} />
+                      </div>
                     </div>
-                    <div className="dashboard-col">
-                      <h2>
-                        Total Deposited (USD million current) by Country
-                        (cleaned)
-                      </h2>
-                      <DepositedByCountryCleanChart data={byCountryClean} />
-                    </div>
-                  </div>
-                )}
+                  )}
+                </div>
               </div>
               {/* Contributor Charts Half */}
               <div>
@@ -244,25 +288,35 @@ function App() {
                   </button>
                   <h2 style={{ margin: 0 }}>Contributor Charts</h2>
                 </div>
-                {showContributorCharts && (
-                  <div className="dashboard-row">
-                    <div className="dashboard-col">
-                      <h2>
-                        Total Deposited (USD million current) by Contributor
-                      </h2>
-                      <DepositedByContributorChart data={byContributor} />
+                <div
+                  className="collapsible-content"
+                  style={{
+                    maxHeight: showContributorCharts ? 2000 : 0,
+                    opacity: showContributorCharts ? 1 : 0,
+                    overflow: "hidden",
+                    transition:
+                      "max-height 0.4s cubic-bezier(0.4,0,0.2,1), opacity 0.4s cubic-bezier(0.4,0,0.2,1)",
+                  }}>
+                  {showContributorCharts && (
+                    <div className="dashboard-row">
+                      <div className="dashboard-col">
+                        <h2>
+                          Total Deposited (USD million current) by Contributor
+                        </h2>
+                        <DepositedByContributorChart data={byContributor} />
+                      </div>
+                      <div className="dashboard-col">
+                        <h2>
+                          Total Deposited (USD million current) by Contributor
+                          (cleaned)
+                        </h2>
+                        <DepositedByContributorCleanChart
+                          data={byContributorClean}
+                        />
+                      </div>
                     </div>
-                    <div className="dashboard-col">
-                      <h2>
-                        Total Deposited (USD million current) by Contributor
-                        (cleaned)
-                      </h2>
-                      <DepositedByContributorCleanChart
-                        data={byContributorClean}
-                      />
-                    </div>
-                  </div>
-                )}
+                  )}
+                </div>
               </div>
             </section>
             {/* SDG Charts by Country Section with minimize */}
@@ -280,21 +334,33 @@ function App() {
                 </button>
                 <h2 style={{ margin: 0 }}>SDG Charts by Country</h2>
               </div>
-              {showSDG && (
-                <div className="dashboard-row">
-                  <div className="dashboard-col">
-                    <h2>Number of SDGs Addressed by Country (same order)</h2>
-                    <SDGCountByContributorOrderChart
-                      contributorData={byContributorClean}
-                      sdgData={sdgCountByCountry}
-                    />
+              <div
+                className="collapsible-content"
+                style={{
+                  maxHeight: showSDG ? 2000 : 0,
+                  opacity: showSDG ? 1 : 0,
+                  overflow: "hidden",
+                  transition:
+                    "max-height 0.4s cubic-bezier(0.4,0,0.2,1), opacity 0.4s cubic-bezier(0.4,0,0.2,1)",
+                }}>
+                {showSDG && (
+                  <div className="dashboard-row">
+                    <div className="dashboard-col">
+                      <h2>Number of SDGs Addressed by Country (same order)</h2>
+                      <SDGCountByContributorOrderChart
+                        contributorData={byContributorClean}
+                        sdgData={sdgCountByCountry}
+                      />
+                    </div>
+                    <div className="dashboard-col">
+                      <h2>
+                        Number of SDGs Addressed by Country (all countries)
+                      </h2>
+                      <SDGCountByCountryChart data={sdgCountByCountry} />
+                    </div>
                   </div>
-                  <div className="dashboard-col">
-                    <h2>Number of SDGs Addressed by Country (all countries)</h2>
-                    <SDGCountByCountryChart data={sdgCountByCountry} />
-                  </div>
-                </div>
-              )}
+                )}
+              </div>
             </section>
           </>
         )}

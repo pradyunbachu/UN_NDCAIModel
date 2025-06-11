@@ -1,7 +1,9 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap");
+
 body {
-  background: #111;
+  background: #181818;
   color: #fff;
-  font-family: "Times New Roman", Times, serif;
+  font-family: "Poppins", sans-serif;
   margin: 0;
   padding: 0;
 }
@@ -13,17 +15,21 @@ body {
 }
 
 .dashboard-container {
-  max-width: 1600px;
-  margin: 0 auto;
-  padding: 0 32px;
+  max-width: 1400px;
+  margin: 32px auto;
+  padding: 32px 24px;
+  background: #202124;
+  border-radius: 32px;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.25);
 }
 
 section {
-  background: #181818;
-  border-radius: 14px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.18);
-  margin: 32px 0;
-  padding: 40px 32px 32px 32px;
+  background: #23242a;
+  border-radius: 24px;
+  margin-bottom: 40px;
+  padding: 32px 24px 24px 24px;
+  box-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.1);
+  transition: background 0.3s, box-shadow 0.3s, padding 0.3s;
 }
 
 h1,
@@ -34,16 +40,18 @@ h2 {
 
 .dashboard-row {
   display: flex;
-  gap: 2rem;
-  justify-content: space-between;
-  align-items: flex-start;
   flex-wrap: wrap;
+  gap: 32px;
+  margin-bottom: 0;
 }
+
 .dashboard-col {
   flex: 1 1 0;
-  min-width: 500px;
-  max-width: 60%;
-  margin-bottom: 24px;
+  min-width: 350px;
+  background: transparent;
+  border-radius: 16px;
+  padding: 16px 8px;
+  transition: background 0.3s, box-shadow 0.3s;
 }
 
 /* Chart and table containers */
@@ -78,6 +86,54 @@ tbody td {
 }
 tbody tr:last-child td {
   border-bottom: none;
+}
+
+h2 {
+  font-size: 1.5rem;
+  font-weight: 400;
+  margin: 0 0 16px 0;
+  color: #fff;
+  border-bottom: 2px solid #3a3a3a;
+  padding-bottom: 4px;
+  background: none;
+  box-shadow: none;
+  letter-spacing: 0.5px;
+}
+
+button {
+  background: #23242a;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  font-size: 1.5rem;
+  font-weight: 400;
+  cursor: pointer;
+  margin-right: 8px;
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.1);
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  outline: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+button:hover {
+  background: #31323a;
+  color: #aee7ff;
+}
+
+section[style*="display: none"] {
+  padding: 0 !important;
+  margin-bottom: 0 !important;
+  box-shadow: none !important;
+}
+
+/* Collapsible content transition */
+.dashboard-row,
+.dashboard-col {
+  transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 @media (max-width: 1200px) {
