@@ -13,6 +13,7 @@ import DepositedByCountryChart from "./components/DepositedByCountryChart";
 import DepositedByCountryTable from "./components/DepositedByCountryTable";
 import DepositedByCountryCleanChart from "./components/DepositedByCountryCleanChart";
 import DepositedByCountryCleanTable from "./components/DepositedByCountryCleanTable";
+import NDCStatusPointsChart from "./components/NDCStatusPointsChart";
 
 function App() {
   const [rawData, setRawData] = useState([]);
@@ -34,6 +35,16 @@ function App() {
   const [showContributorCharts, setShowContributorCharts] = useState(true);
   const [showSDG, setShowSDG] = useState(true);
   const [showRawData, setShowRawData] = useState(true);
+  const [ndcStatusTable, setNdcStatusTable] = useState([]);
+  const [ndcStatusPoints, setNdcStatusPoints] = useState([]);
+  const [depositedByNdcStatusCountries, setDepositedByNdcStatusCountries] =
+    useState([]);
+  const [showNdcStatusSection, setShowNdcStatusSection] = useState(true);
+  const [ndcStatusPointsOverlap, setNdcStatusPointsOverlap] = useState([]);
+  const [
+    depositedByNdcStatusCountriesOverlapOrder,
+    setDepositedByNdcStatusCountriesOverlapOrder,
+  ] = useState([]);
 
   useEffect(() => {
     Promise.all([
@@ -48,6 +59,21 @@ function App() {
       fetch("/api/by_country_math").then((r) => r.json()),
       fetch("/api/by_country_clean").then((r) => r.json()),
       fetch("/api/by_country_clean_math").then((r) => r.json()),
+      fetch("/api/ndc_status_table")
+        .then((r) => r.json())
+        .then(setNdcStatusTable),
+      fetch("/api/ndc_status_points_chart")
+        .then((r) => r.json())
+        .then(setNdcStatusPoints),
+      fetch("/api/deposited_by_ndc_status_countries")
+        .then((r) => r.json())
+        .then(setDepositedByNdcStatusCountries),
+      fetch("/api/ndc_status_points_chart_overlap")
+        .then((r) => r.json())
+        .then(setNdcStatusPointsOverlap),
+      fetch("/api/deposited_by_ndc_status_countries_overlap_order")
+        .then((r) => r.json())
+        .then(setDepositedByNdcStatusCountriesOverlapOrder),
     ])
       .then(
         ([
@@ -62,6 +88,11 @@ function App() {
           byCountryMath,
           byCountryClean,
           byCountryCleanMath,
+          ndcStatusTable,
+          ndcStatusPoints,
+          depositedByNdcStatusCountries,
+          ndcStatusPointsOverlap,
+          depositedByNdcStatusCountriesOverlapOrder,
         ]) => {
           setRawData(rawData);
           setDepositedColumn(depositedColumn);
@@ -359,6 +390,75 @@ function App() {
                       <SDGCountByCountryChart data={sdgCountByCountry} />
                     </div>
                   </div>
+                )}
+              </div>
+            </section>
+            {/* NDC Status Section */}
+            <section>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  marginBottom: 8,
+                }}>
+                <button
+                  onClick={() => setShowNdcStatusSection((v) => !v)}
+                  style={{ marginRight: 8 }}>
+                  {showNdcStatusSection ? "−" : "+"}
+                </button>
+                <h2 style={{ margin: 0 }}>
+                  NDC Status Comparison (NewClimate Data)
+                </h2>
+              </div>
+              <div
+                className="collapsible-content"
+                style={{
+                  maxHeight: showNdcStatusSection ? 2000 : 0,
+                  opacity: showNdcStatusSection ? 1 : 0,
+                  overflow: "hidden",
+                  transition:
+                    "max-height 0.4s cubic-bezier(0.4,0,0.2,1), opacity 0.4s cubic-bezier(0.4,0,0.2,1)",
+                }}>
+                {showNdcStatusSection && (
+                  <>
+                    <div style={{ marginBottom: 32 }}>
+                      <RawDataTable data={ndcStatusTable} />
+                    </div>
+                    <div className="dashboard-row">
+                      <div className="dashboard-col">
+                        <h2>NDC Status Points by Country</h2>
+                        <NDCStatusPointsChart data={ndcStatusPoints} />
+                      </div>
+                      <div className="dashboard-col">
+                        <h2>
+                          Total Deposited (USD million current) by Country (NDC
+                          Status Countries Only)
+                        </h2>
+                        <DepositedByCountryChart
+                          data={depositedByNdcStatusCountries}
+                        />
+                      </div>
+                    </div>
+                    <div className="dashboard-row">
+                      <div className="dashboard-col">
+                        <h2>
+                          NDC Status Points by Country (Overlap Only, Ordered)
+                        </h2>
+                        <NDCStatusPointsChart data={ndcStatusPointsOverlap} />
+                      </div>
+                      <div
+                        className="dashboard-col"
+                        style={{ minWidth: 400, maxWidth: "100%" }}>
+                        <h2>
+                          Total Deposited (USD million current) by Country
+                          (Overlap Only, Ordered)
+                        </h2>
+                        <DepositedByCountryChart
+                          data={depositedByNdcStatusCountriesOverlapOrder}
+                        />
+                      </div>
+                    </div>
+                  </>
                 )}
               </div>
             </section>

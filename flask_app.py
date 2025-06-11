@@ -242,6 +242,104 @@ def api_by_country_clean_math():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+@app.route('/api/ndc_status_table')
+def api_ndc_status_table():
+    """
+    API endpoint to get all rows from NewClimateNDCCompData.xlsx as JSON.
+    """
+    try:
+        df = pd.read_excel('Data/NewClimateNDCCompData.xlsx')
+        df = df.replace({np.nan: None, np.inf: None, -np.inf: None})
+        return jsonify(df.to_dict(orient="records"))
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/ndc_status_points_chart')
+def api_ndc_status_points_chart():
+    """
+    API endpoint to get a list of {Country, NDC_Status, Points} for charting.
+    """
+    try:
+        df = pd.read_excel('Data/NewClimateNDCCompData.xlsx')
+        points_map = {
+            'on track': 1,
+            'likely on track': 0.75,
+            'likely off track': 0.5,
+            'off track': 0.25
+        }
+        df['Points'] = df['NDC_Status'].str.strip().str.lower().map(points_map).fillna(0)
+        chart_data = df[['Country', 'NDC_Status', 'Points']].sort_values('Points', ascending=True)
+        chart_data = chart_data.replace({np.nan: None, np.inf: None, -np.inf: None})
+        return jsonify(chart_data.to_dict(orient="records"))
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/deposited_by_ndc_status_countries')
+def api_deposited_by_ndc_status_countries():
+    """
+    API endpoint to get total deposited by country, but only for countries present in NewClimateNDCCompData.xlsx.
+    """
+    try:
+        ndc_df = pd.read_excel('Data/NewClimateNDCCompData.xlsx')
+        ndc_countries = set(ndc_df['Country'].dropna().unique())
+        finance_df = load_data()
+        filtered = finance_df[finance_df['Country'].isin(ndc_countries)]
+        grouped = filtered.groupby('Country', as_index=False)['Deposited (USD million current)'].sum()
+        grouped = grouped.sort_values('Deposited (USD million current)', ascending=True)
+        grouped = grouped.replace({np.nan: None, np.inf: None, -np.inf: None})
+        return jsonify(grouped.to_dict(orient="records"))
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/ndc_status_points_chart_overlap')
+def api_ndc_status_points_chart_overlap():
+    """
+    API endpoint to get NDC status points only for countries present in both datasets, in the exact order of deposited_by_ndc_status_countries_overlap_order (by deposited amount ascending).
+    """
+    try:
+        ndc_df = pd.read_excel('Data/NewClimateNDCCompData.xlsx')
+        finance_df = load_data()
+        finance_countries = set(finance_df['Country'].dropna().unique())
+        overlap_df = ndc_df[ndc_df['Country'].isin(finance_countries)].copy()
+        points_map = {
+            'on track': 1,
+            'likely on track': 0.75,
+            'likely off track': 0.5,
+            'off track': 0.25
+        }
+        overlap_df['Points'] = overlap_df['NDC_Status'].str.strip().str.lower().map(points_map).fillna(0)
+        # Get the overlap order from the deposited endpoint logic
+        filtered = finance_df[finance_df['Country'].isin(overlap_df['Country'])]
+        order = filtered.groupby('Country', as_index=False)['Deposited (USD million current)'].sum()
+        order = order.sort_values('Deposited (USD million current)', ascending=True)['Country'].tolist()
+        overlap_df['Country'] = pd.Categorical(overlap_df['Country'], categories=order, ordered=True)
+        chart_data = overlap_df[['Country', 'NDC_Status', 'Points']].sort_values('Country')
+        chart_data = chart_data.replace({np.nan: None, np.inf: None, -np.inf: None})
+        return jsonify(chart_data.to_dict(orient="records"))
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/deposited_by_ndc_status_countries_overlap_order')
+def api_deposited_by_ndc_status_countries_overlap_order():
+    """
+    API endpoint to get total deposited by country, only for countries present in both datasets, in the overlap order from the NDC data (no sorting by deposited amount).
+    """
+    try:
+        ndc_df = pd.read_excel('Data/NewClimateNDCCompData.xlsx')
+        finance_df = load_data()
+        finance_countries = set(finance_df['Country'].dropna().unique())
+        overlap_df = ndc_df[ndc_df['Country'].isin(finance_countries)].copy()
+        # Get the overlap order from the NDC data (no sorting)
+        overlap_order = overlap_df['Country'].tolist()
+        filtered = finance_df[finance_df['Country'].isin(overlap_order)]
+        grouped = filtered.groupby('Country', as_index=False)['Deposited (USD million current)'].sum()
+        grouped['Country'] = pd.Categorical(grouped['Country'], categories=overlap_order, ordered=True)
+        grouped = grouped.sort_values('Country')
+        grouped = grouped.replace({np.nan: None, np.inf: None, -np.inf: None})
+        return jsonify(grouped.to_dict(orient="records"))
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 @app.route('/')
 def root():
     """
