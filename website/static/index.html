@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>NDC Deposits Dashboard</title>
+    <link rel="stylesheet" href="static/style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <h1>NDC Deposits Dashboard</h1>
+
+    <section>
+      <h2>All Deposited (USD million current) Data</h2>
+      <div class="table-scroll">
+        <table id="rawDataTable"></table>
+      </div>
+    </section>
+
+    <section>
+      <h2>Deposited (USD million current) Data</h2>
+      <div class="table-scroll">
+        <table id="depositedColumnTable"></table>
+      </div>
+    </section>
+
+    <section>
+      <h2>Distribution of Deposited (USD million current)</h2>
+      <canvas id="histogramChart"></canvas>
+    </section>
+
+    <section>
+      <div class="dashboard-row">
+        <div class="dashboard-col">
+          <h2>Total Deposited (USD million current) by Contributor</h2>
+          <canvas id="byContributorChart"></canvas>
+        </div>
+        <div class="dashboard-col">
+          <h2>
+            Table: Total Deposited (USD million current) by Contributor (with
+            math)
+          </h2>
+          <div class="table-scroll">
+            <table id="byContributorMathTable"></table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="dashboard-row">
+        <div class="dashboard-col">
+          <h2>
+            Total Deposited (USD million current) by Contributor (cleaned)
+          </h2>
+          <canvas id="byContributorCleanChart"></canvas>
+        </div>
+        <div class="dashboard-col">
+          <h2>
+            Table: Total Deposited (USD million current) by Contributor (with
+            math, cleaned)
+          </h2>
+          <div class="table-scroll">
+            <table id="byContributorCleanMathTable"></table>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section>
+      <div class="dashboard-row">
+        <div class="dashboard-col">
+          <h2>Number of SDGs Addressed by Country (same order)</h2>
+          <canvas id="sdgCountByContributorOrderChart"></canvas>
+        </div>
+        <div class="dashboard-col">
+          <h2>Number of SDGs Addressed by Country (all countries)</h2>
+          <canvas id="sdgCountChart"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <script src="static/app.js"></script>
+  </body>
+</html>

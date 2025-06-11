@@ -1,9 +1,9 @@
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
+import re
 
 # Removed custom CSS block for dark background
-
 st.markdown(
     """
     <style>
@@ -80,4 +80,32 @@ if 'Deposited (USD million current)' in finance_data.columns:
     st.subheader("Table: Total Deposited (USD million current) by Contributor (with math)")
     st.dataframe(contributor_deposit_details[['Contributor', 'Entries', 'Sum Math', 'Total']])
 else:
-    st.error("Column 'Deposited (USD million current)' not found in the data. Please check the column name.") 
+    st.error("Column 'Deposited (USD million current)' not found in the data. Please check the column name.")
+
+def clean_contributor(name):
+    return re.split(r'\s*\(', str(name))[0].strip()
+
+finance_data['Contributor_clean'] = finance_data['Contributor'].apply(clean_contributor)
+
+# --- Plot: Total Deposited (USD million current) by Contributor (cleaned) ---
+st.subheader("Total Deposited (USD million current) by Contributor (cleaned)")
+contributor_deposit = finance_data.groupby('Contributor_clean', as_index=False)['Deposited (USD million current)'].sum()
+contributor_deposit = contributor_deposit.sort_values('Deposited (USD million current)', ascending=True)
+fig_contributor, ax_contributor = plt.subplots(figsize=(12, 6))
+ax_contributor.bar(contributor_deposit['Contributor_clean'], contributor_deposit['Deposited (USD million current)'], color='seagreen')
+ax_contributor.set_xlabel('Contributor')
+ax_contributor.set_ylabel('Total Deposited (USD million current)')
+ax_contributor.set_title('Total Deposited (USD million current) by Contributor (cleaned)')
+plt.xticks(rotation=90, fontsize=8)
+st.pyplot(fig_contributor)
+
+# --- Table: Total Deposited (USD million current) by Contributor (with math, cleaned) ---
+contributor_deposit_details = finance_data.groupby('Contributor_clean')['Deposited (USD million current)'].agg(
+    Total='sum',
+    Entries=lambda x: list(x)
+).reset_index()
+contributor_deposit_details['Sum Math'] = contributor_deposit_details['Entries'].apply(
+    lambda x: ' + '.join([str(v) for v in x]) + f' = {sum(x)}'
+)
+st.subheader("Table: Total Deposited (USD million current) by Contributor (with math, cleaned)")
+st.dataframe(contributor_deposit_details[['Contributor_clean', 'Entries', 'Sum Math', 'Total']]) 
