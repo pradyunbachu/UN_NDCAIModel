@@ -165,6 +165,83 @@ def api_sdg_count_by_country():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+@app.route('/api/by_country')
+def api_by_country():
+    """
+    API endpoint to get total deposits grouped by country.
+    Returns sorted list of countries and their total deposits.
+    """
+    try:
+        df = load_data()
+        grouped = df.groupby('Country', as_index=False)['Deposited (USD million current)'].sum()
+        grouped = grouped.sort_values('Deposited (USD million current)', ascending=True)
+        grouped = grouped.replace({np.nan: None, np.inf: None, -np.inf: None})
+        return jsonify(grouped.to_dict(orient="records"))
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/by_country_math')
+def api_by_country_math():
+    """
+    API endpoint to get detailed country data including individual entries and sum calculation.
+    Returns countries with their individual deposits and the mathematical sum.
+    """
+    try:
+        df = load_data()
+        details = df.groupby('Country')['Deposited (USD million current)'].agg(
+            Total='sum',
+            Entries=lambda x: list(x)
+        ).reset_index()
+        details['Sum Math'] = details['Entries'].apply(
+            lambda x: ' + '.join([str(v) for v in x]) + f' = {sum(x)}'
+        )
+        details = details.replace({np.nan: None, np.inf: None, -np.inf: None})
+        details['Entries'] = details['Entries'].apply(clean_entries)
+        return jsonify(details.to_dict(orient="records"))
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/by_country_clean')
+def api_by_country_clean():
+    """
+    API endpoint to get total deposits grouped by cleaned country names.
+    Similar to by_country but uses cleaned names without parenthetical information.
+    """
+    try:
+        df = load_data()
+        df['Country_clean'] = df['Country'].apply(clean_contributor)
+        all_countries = pd.DataFrame({'Country_clean': df['Country_clean'].unique()})
+        grouped = df.groupby('Country_clean', as_index=False)['Deposited (USD million current)'].sum()
+        merged = all_countries.merge(grouped, on='Country_clean', how='left')
+        merged['Deposited (USD million current)'] = merged['Deposited (USD million current)'].fillna(0)
+        merged = merged.sort_values('Deposited (USD million current)', ascending=True)
+        merged = merged.replace({np.nan: None, np.inf: None, -np.inf: None})
+        return jsonify(merged.to_dict(orient="records"))
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/by_country_clean_math')
+def api_by_country_clean_math():
+    """
+    API endpoint to get detailed country data with cleaned names.
+    Similar to by_country_math but uses cleaned country names.
+    """
+    try:
+        df = load_data()
+        df['Country_clean'] = df['Country'].apply(clean_contributor)
+        details = df.groupby('Country_clean')['Deposited (USD million current)'].agg(
+            Total='sum',
+            Entries=lambda x: list(x)
+        ).reset_index()
+        details['Sum Math'] = details['Entries'].apply(
+            lambda x: ' + '.join([str(v) for v in x]) + f' = {sum(x)}'
+        )
+        details = details.replace({np.nan: None, np.inf: None, -np.inf: None})
+        details['Entries'] = details['Entries'].apply(clean_entries)
+        return jsonify(details.to_dict(orient="records"))
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 @app.route('/')
 def root():
     """
