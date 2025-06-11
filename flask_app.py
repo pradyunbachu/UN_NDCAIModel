@@ -1,5 +1,6 @@
 # Import required libraries
 from flask import Flask, jsonify, send_from_directory
+from flask_cors import CORS
 import pandas as pd
 import os
 import re
@@ -9,6 +10,7 @@ import csv
 
 # Initialize Flask application with static files directory
 app = Flask(__name__, static_folder='website/static')
+CORS(app)
 
 def load_data():
     """
@@ -171,5 +173,4 @@ def root():
     return send_from_directory(app.static_folder, 'index.html')
 
 if __name__ == '__main__':
-    # Run the Flask application in debug mode
-    app.run(debug=True) 
+    app.run(debug=True, host='0.0.0.0', port=5050) 
