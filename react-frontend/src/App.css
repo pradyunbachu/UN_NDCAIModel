@@ -2,7 +2,7 @@
 
 body {
   background: #181818;
-  color: #fff;
+  color: #f4f4f4;
   font-family: "Poppins", sans-serif;
   margin: 0;
   padding: 0;
@@ -11,20 +11,20 @@ body {
 .App {
   min-height: 100vh;
   padding: 32px 0;
-  background: #111;
+  background: #222326;
 }
 
 .dashboard-container {
   max-width: 1400px;
   margin: 32px auto;
   padding: 32px 24px;
-  background: #202124;
+  background: #222326;
   border-radius: 32px;
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.25);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
 }
 
 section {
-  background: #23242a;
+  background: #23272a;
   border-radius: 24px;
   margin-bottom: 40px;
   padding: 32px 24px 24px 24px;
@@ -48,7 +48,7 @@ h2 {
 .dashboard-col {
   flex: 1 1 0;
   min-width: 350px;
-  background: transparent;
+  background: #23272a;
   border-radius: 16px;
   padding: 16px 8px;
   transition: background 0.3s, box-shadow 0.3s;
@@ -57,7 +57,7 @@ h2 {
 /* Chart and table containers */
 .dashboard-col > div,
 section > div {
-  background: #222;
+  background: #23272a;
   border-radius: 10px;
   padding: 16px;
   margin-bottom: 16px;
@@ -69,19 +69,19 @@ section > div {
 table {
   width: 100%;
   border-collapse: collapse;
-  background: #222;
+  background: #23272a;
   border-radius: 8px;
   font-size: 0.97rem;
 }
 thead th {
-  background: #333;
-  color: #fff;
+  background: #23272a;
+  color: #f4f4f4;
   padding: 0.5rem 0.75rem;
 }
 tbody td {
   padding: 0.4rem 0.75rem;
-  border-bottom: 1px solid #333;
-  color: #fff;
+  border-bottom: 1px solid #33363a;
+  color: #f4f4f4;
   vertical-align: top;
 }
 tbody tr:last-child td {
@@ -93,16 +93,24 @@ h2 {
   font-weight: 400;
   margin: 0 0 16px 0;
   color: #fff;
-  border-bottom: 2px solid #3a3a3a;
+  border-bottom: 2px solid #33363a;
   padding-bottom: 4px;
   background: none;
   box-shadow: none;
   letter-spacing: 0.5px;
 }
 
+/* Tab and section header styles */
+.tab-label,
+.section-header,
+.tab,
+.tab-text {
+  color: #fff !important;
+}
+
 button {
-  background: #23242a;
-  color: #fff;
+  background: #23272a;
+  color: #f4f4f4;
   border: none;
   border-radius: 50%;
   width: 32px;
@@ -119,8 +127,8 @@ button {
   justify-content: center;
 }
 button:hover {
-  background: #31323a;
-  color: #aee7ff;
+  background: #33363a;
+  color: #4a4a4a;
 }
 
 section[style*="display: none"] {

@@ -14,6 +14,9 @@ import DepositedByCountryTable from "./components/DepositedByCountryTable";
 import DepositedByCountryCleanChart from "./components/DepositedByCountryCleanChart";
 import DepositedByCountryCleanTable from "./components/DepositedByCountryCleanTable";
 import NDCStatusPointsChart from "./components/NDCStatusPointsChart";
+import OilProductionTable from "./components/OilProductionTable";
+import OilProductionChart from "./components/OilProductionChart";
+import NDCStatusOilProductionChart from "./components/NDCStatusOilProductionChart";
 
 function App() {
   const [rawData, setRawData] = useState([]);
@@ -462,6 +465,21 @@ function App() {
                 )}
               </div>
             </section>
+            {/* Oil Production Section */}
+            <section>
+              <h2 style={{ textAlign: "center", marginBottom: 24 }}>
+                Oil Production by Country (Latest Year)
+              </h2>
+              <div className="dashboard-row">
+                <div className="dashboard-col">
+                  <OilProductionTable />
+                </div>
+                <div className="dashboard-col">
+                  <OilProductionChart />
+                </div>
+              </div>
+            </section>
+            <NDCStatusOilProductionChart ndcStatusPoints={ndcStatusPoints} />
           </>
         )}
       </div>
